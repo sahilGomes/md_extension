@@ -15,17 +15,17 @@ emojify.setConfig({
 });
 
 var md = markdownit({
-        html: true,
-        highlight: function(code, lang) {
-            if (languageOverrides[lang]) lang = languageOverrides[lang];
-            if (lang && hljs.getLanguage(lang)) {
-                try {
-                    return hljs.highlight(lang, code).value;
-                } catch (e) {}
-            }
-            return '';
+    html: true,
+    highlight: function (code, lang) {
+        if (languageOverrides[lang]) lang = languageOverrides[lang];
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(lang, code).value;
+            } catch (e) { }
         }
-    })
+        return '';
+    }
+})
     .use(markdownitFootnote);
 
 var hashto;
@@ -58,18 +58,18 @@ If regex matches the string to task-list markdown format,
 then the task-list is rendered to its correct form.
 User: @austinmm
 */
-var render_tasklist = function(str){
+var render_tasklist = function (str) {
     // Checked task-list box match
-	if(str.match(/<li>\[x\]\s+\w+/gi)){
+    if (str.match(/<li>\[x\]\s+\w+/gi)) {
         str = str.replace(/(<li)(>\[x\]\s+)(\w+)/gi,
-          `$1 style="list-style-type: none;"><input type="checkbox"
+            `$1 style="list-style-type: none;"><input type="checkbox"
           checked style="list-style-type: none;
           margin: 0 0.2em 0 -1.3em;" disabled> $3`);
     }
     // Unchecked task-list box match
-    if (str.match(/<li>\[ \]\s+\w+/gi)){
+    if (str.match(/<li>\[ \]\s+\w+/gi)) {
         str = str.replace(/(<li)(>\[ \]\s+)(\w+)/gi,
-          `$1 style="list-style-type: none;"><input type="checkbox"
+            `$1 style="list-style-type: none;"><input type="checkbox"
             style="list-style-type: none;
             margin: 0 0.2em 0 -1.3em;" disabled> $3`);
     }
@@ -77,7 +77,7 @@ var render_tasklist = function(str){
 }
 
 function setOutput(val) {
-    val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function(a, b) {
+    val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function (a, b) {
         return '<img src="https://latex.codecogs.com/png.latex?' + encodeURIComponent(b) + '" />';
     });
 
@@ -121,11 +121,11 @@ var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
 
 editor.on('change', update);
 
-function selectionChanger(selection,operator,endoperator){
-    if(selection == ""){
+function selectionChanger(selection, operator, endoperator) {
+    if (selection == "") {
         return operator;
     }
-    if(!endoperator){
+    if (!endoperator) {
         endoperator = operator
     }
     var isApplied = selection.slice(0, 2) === operator && selection.slice(-2) === endoperator;
@@ -135,49 +135,49 @@ function selectionChanger(selection,operator,endoperator){
 
 editor.addKeyMap({
     // bold
-    'Ctrl-B': function(cm) {
-        cm.replaceSelection(selectionChanger(cm.getSelection(),'**'));
+    'Ctrl-B': function (cm) {
+        cm.replaceSelection(selectionChanger(cm.getSelection(), '**'));
     },
     // italic
-    'Ctrl-I': function(cm) {
-        cm.replaceSelection(selectionChanger(cm.getSelection(),'_'));
+    'Ctrl-I': function (cm) {
+        cm.replaceSelection(selectionChanger(cm.getSelection(), '_'));
     },
     // code
-    'Ctrl-K': function(cm) {
-        cm.replaceSelection(selectionChanger(cm.getSelection(),'`'));
+    'Ctrl-K': function (cm) {
+        cm.replaceSelection(selectionChanger(cm.getSelection(), '`'));
     },
     // keyboard shortcut
-    'Ctrl-L': function(cm) {
-        cm.replaceSelection(selectionChanger(cm.getSelection(),'<kbd>','</kbd>'));
+    'Ctrl-L': function (cm) {
+        cm.replaceSelection(selectionChanger(cm.getSelection(), '<kbd>', '</kbd>'));
     }
 });
 
-document.addEventListener('drop', function(e) {
+document.addEventListener('drop', function (e) {
     e.preventDefault();
     e.stopPropagation();
 
     var reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         editor.setValue(e.target.result);
     };
 
     reader.readAsText(e.dataTransfer.files[0]);
 }, false);
 
-document.getElementById('openbutton').addEventListener('click', function(){
-  document.getElementById('fileInput').click();
+document.getElementById('openbutton').addEventListener('click', function () {
+    document.getElementById('fileInput').click();
 });
 
-document.getElementById('savebutton').addEventListener('click', function(){
-  showMenu();
+document.getElementById('savebutton').addEventListener('click', function () {
+    showMenu();
 });
 
-document.getElementById('browsersavebutton').addEventListener('click', function(){
-  saveInBrowser();
+document.getElementById('browsersavebutton').addEventListener('click', function () {
+    saveInBrowser();
 });
 
-document.getElementById('printbutton').addEventListener('click', function(){
-  window.print();
+document.getElementById('printbutton').addEventListener('click', function () {
+    window.print();
 });
 
 /*
@@ -186,16 +186,16 @@ document.getElementById('sharebutton').addEventListener('click', function(){
 });
 */
 
-document.getElementById('nightbutton').addEventListener('click', function(){
-  toggleNightMode(this);
+document.getElementById('nightbutton').addEventListener('click', function () {
+    toggleNightMode(this);
 });
 
-document.getElementById('readbutton').addEventListener('click', function(){
-  toggleReadMode(this);
+document.getElementById('readbutton').addEventListener('click', function () {
+    toggleReadMode(this);
 });
 
-document.getElementById('spellbutton').addEventListener('click', function(){
-  toggleSpellCheck(this);
+document.getElementById('spellbutton').addEventListener('click', function () {
+    toggleSpellCheck(this);
 });
 
 //Print the document named as the document title encoded to avoid strange chars and spaces
@@ -208,12 +208,12 @@ function saveAsHtml() {
     save(document.getElementById('out').innerHTML, document.title.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/\s]/gi, '') + ".html");
 }
 
-document.getElementById('saveas-markdown').addEventListener('click', function() {
+document.getElementById('saveas-markdown').addEventListener('click', function () {
     saveAsMarkdown();
     hideMenu();
 });
 
-document.getElementById('saveas-html').addEventListener('click', function() {
+document.getElementById('saveas-html').addEventListener('click', function () {
     saveAsHtml();
     hideMenu();
 });
@@ -255,7 +255,7 @@ function openFile(evt) {
         var files = evt.target.files;
         console.log(files);
         var reader = new FileReader();
-        reader.onload = function(file) {
+        reader.onload = function (file) {
             console.log(file.target.result);
             editor.setValue(file.target.result);
             return true;
@@ -267,13 +267,13 @@ function openFile(evt) {
     }
 }
 
-document.getElementById('close-menu').addEventListener('click', function() {
+document.getElementById('close-menu').addEventListener('click', function () {
     hideMenu();
 });
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.keyCode == 83 && (e.ctrlKey || e.metaKey)) {
-        if ( localStorage.getItem('editor.content') == editor.getValue() ) {
+        if (localStorage.getItem('editor.content') == editor.getValue()) {
             e.preventDefault();
             return false;
         }
@@ -334,7 +334,7 @@ function processQueryParams() {
     }
     if (params) {
         var obj = {};
-        params.split('&').forEach(function(elem) {
+        params.split('&').forEach(function (elem) {
             obj[elem.split('=')[0]] = elem.split('=')[1];
         });
         if (obj.reading === 'false') {
@@ -377,7 +377,7 @@ window.addEventListener("beforeunload", function (e) {
         return;
     }
     var confirmationMessage = 'It looks like you have been editing something. '
-                            + 'If you leave before saving, your changes will be lost.';
+        + 'If you leave before saving, your changes will be lost.';
     (e || window.event).returnValue = confirmationMessage; //Gecko + IE
     return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
 });
