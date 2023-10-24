@@ -48,8 +48,6 @@ function update(e) {
         oldTitle = title;
         document.title = title;
     }
-    //clearTimeout(hashto);
-    //hashto = setTimeout(updateHash, 1000);
 }
 
 /*
@@ -85,7 +83,7 @@ function setOutput(val) {
     var old = out.cloneNode(true);
     out.innerHTML = md.render(val);
     emojify.run(out);
-    console.log(out.innerHTML);
+    // console.log(out.innerHTML);
     // Checks if there are any task-list present in out.innerHTML
     out.innerHTML = render_tasklist(out.innerHTML);
 
@@ -298,7 +296,7 @@ function clearEditor() {
 function saveInBrowser() {
     var text = editor.getValue();
     localStorage.setItem('editor.content', text);
-    console.log("Saved");
+    // console.log("Saved");
 }
 
 function toggleNightMode(button) {
@@ -381,5 +379,9 @@ window.addEventListener("beforeunload", function (e) {
     (e || window.event).returnValue = confirmationMessage; //Gecko + IE
     return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
 });
+
+window.addEventListener("load",()=>{
+    // afterwards add some hint about markdown syntax like pop up
+})
 
 start();
